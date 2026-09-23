@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">春山 21点</string>
+    <string name="title_activity_main">春山 21点</string>
+    <string name="package_name">com.chunshan.blackjack</string>
+    <string name="custom_url_scheme">com.chunshan.blackjack</string>
+</resources>

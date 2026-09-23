@@ -1,0 +1,11 @@
+{
+	"appId": "com.chunshan.blackjack",
+	"appName": "春山 21点",
+	"webDir": "www",
+	"server": {
+		"androidScheme": "https"
+	},
+	"android": {
+		"adjustMarginsForEdgeToEdge": "force"
+	}
+}

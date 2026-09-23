@@ -1,0 +1,137 @@
+---
+import '../styles/blackjack.css';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="description" content="春山入梦 · 21点。一副牌，两种选择。" />
+    <title>春山入梦 · 21点</title><link rel="icon" type="image/png" sizes="96x96" href={`${base}/blackjack-avatar-96.png?v=9`} />
+  </head>
+  <body>
+    <div class="print-texture" aria-hidden="true"></div>
+    <header class="topbar">
+      <a class="wordmark" href={`${base}/`} aria-label="春山入梦，返回首页"
+        >春山入梦<span class="wordmark-dot" aria-hidden="true"></span></a
+      >
+      <span class="edition">PLAY / 001</span>
+      <nav aria-label="游戏设置">
+        <button id="sound" aria-pressed="true">声音 <span id="sound-label">开</span></button
+        ><button id="key-hints" aria-pressed="true"
+          >键位 <span id="key-hints-label">开</span></button
+        ><button id="rules-open">规则 <span aria-hidden="true">↗</span></button>
+      </nav>
+    </header>
+    <main class="game" data-phase="idle">
+      <div class="poster" aria-hidden="true">
+        <span class="poster-label">A GAME OF</span><div class="poster-number">
+          21<span class="poster-star">✳</span>
+        </div><span class="poster-title">BLACK<br />JACK.</span><span class="poster-caption"
+          >再来一局？<br />还是到此为止。</span
+        >
+      </div>
+      <h1 class="sr-only">春山入梦 · 21点</h1>
+      <section class="playfield" aria-label="21点牌桌">
+        <div class="table-outline" aria-hidden="true"><div class="table-outline-inner"></div></div>
+        <div class="round-tag">
+          <span class="round-dot" aria-hidden="true"></span>ROUND <span id="round">01</span>
+        </div>
+        <div class="hand-section dealer-section">
+          <div class="hand-heading">
+            <span>NANA <small>DEALER</small></span><output id="dealer-score" aria-label="NANA点数"
+              >—</output
+            >
+          </div><div class="hand" id="dealer-hand" aria-label="NANA的牌">
+            <div class="card-slot"></div><div class="card-slot"></div>
+          </div>
+        </div>
+        <div class="center-mark" aria-hidden="true">
+          <span>♠</span><span class="center-line"></span><span>21</span><span class="center-line"
+          ></span><span>♦</span>
+        </div>
+        <div class="deck" aria-hidden="true">
+          <span class="deck-label">52 CARDS</span><div class="deck-card">
+            <div class="back-mark"><span>21</span></div>
+          </div>
+        </div>
+        <div class="hand-section player-section">
+          <div class="hand" id="player-hand" aria-label="你的牌">
+            <div class="card-slot"></div><div class="card-slot"></div>
+          </div><div class="hand-heading">
+            <span>你 <small>PLAYER</small></span><output id="player-score" aria-label="你的点数"
+              >—</output
+            >
+          </div>
+        </div>
+        <div class="table-footnote">A = 1 / 11<span>NANA 17 点停牌</span></div>
+      </section>
+      <section class="control-bar" aria-label="牌局操作">
+        <div class="status" role="status" aria-live="polite" aria-atomic="true">
+          <p id="message">一副牌，两种选择。</p><span id="submessage">接近 21 点，别超过。</span>
+        </div><div class="actions">
+          <button class="button primary" id="deal"
+            >开始 <span aria-hidden="true">↗</span><kbd>空格</kbd></button
+          ><button class="button primary" id="hit" hidden
+            >要牌 <span aria-hidden="true">＋</span><kbd>空格</kbd></button
+          ><button class="button secondary" id="stand" hidden
+            >停牌 <span aria-hidden="true">−</span><kbd>S</kbd></button
+          >
+        </div>
+      </section>
+    </main>
+    <footer class="bottom-bar">
+      <a href={`${base}/`}>← 返回首页</a><span>JUST CARDS. JUST PLAY.</span><span
+        class="footer-suits"
+        aria-hidden="true">♠ <i>♥</i> ♣ <i>♦</i></span
+      >
+    </footer>
+    <dialog id="rules" aria-labelledby="rules-title">
+      <div class="dialog-header">
+        <span>HOW TO PLAY</span><button id="rules-close" aria-label="关闭规则">×</button>
+      </div><h2 id="rules-title">到 21 点为止。</h2><p>
+        点数比NANA大，且不超过 21 点，你就赢了。
+      </p><dl>
+        <dt>怎么计点</dt><dd>A 自动按 1 或 11 计算；J、Q、K 为 10；其他牌按牌面计算。</dd><dt>
+          你的选择
+        </dt><dd>
+          要牌：再拿一张。停牌：结束你的回合，由NANA翻牌。达到 21 点自动停牌，超过则爆牌。
+        </dd><dt>什么是 Blackjack</dt><dd>
+          起手两张牌由一张 A 和一张 10 点牌组成，合计 21 点，称为 Blackjack；它胜过之后补牌形成的 21
+          点。双方同时拿到 Blackjack 则平局。
+        </dd><dt>NANA与胜负</dt><dd>NANA不足 17 点必须补牌，软 17 点也停牌。同点数则平局。</dd><dt>
+          每一局
+        </dt><dd>重新洗一副 52 张牌。无筹码、加倍、分牌或保险。</dd>
+      </dl><div class="dialog-shortcuts">
+        <span><kbd>Space</kbd> 开始 / 要牌 / 再来一局</span><span><kbd>S</kbd> 停牌</span><span
+          ><kbd>W</kbd> 查看牌面</span
+        ><span><kbd>Esc</kbd> 关闭结算单</span>
+      </div>
+    </dialog>
+    <dialog id="round-result" aria-labelledby="result-title" aria-describedby="result-description">
+      <div class="receipt-corners" aria-hidden="true"><i>♠</i><i>♦</i><i>♣</i><i>♥</i></div>
+      <header class="receipt-header">
+        <span>ROUND / <span id="result-round">01</span></span><span>RESULT</span>
+      </header>
+      <div class="receipt-result">
+        <p class="receipt-eyebrow">本局结果</p><h2 id="result-title">你赢了。</h2>
+        <p id="result-description">点数相同</p>
+      </div>
+      <div class="receipt-scores">
+        <div><span>你 <small>PLAYER</small></span><strong id="result-player">21</strong></div>
+        <span class="receipt-versus" aria-hidden="true">VS</span>
+        <div><span>NANA <small>DEALER</small></span><strong id="result-dealer">18</strong></div>
+      </div>
+      <div class="receipt-actions">
+        <button id="result-close" class="button receipt-secondary">查看牌面 <kbd>W</kbd></button>
+        <button id="result-replay" class="button primary"
+          >再来一局 <kbd aria-label="空格键">␣</kbd><span aria-hidden="true">↗</span></button
+        >
+      </div>
+      <span class="receipt-footer" aria-hidden="true">JUST CARDS. JUST PLAY.</span>
+    </dialog>
+    <noscript><p class="noscript">开启 JavaScript 后即可游戏。</p></noscript>
+    <script src="../scripts/blackjack.ts"></script>
+  </body>
+</html>

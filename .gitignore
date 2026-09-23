@@ -1,0 +1,6 @@
+node_modules/
+dist/
+.astro/
+apps/android/android/.gradle/
+apps/android/android/app/build/
+apps/android/android/local.properties

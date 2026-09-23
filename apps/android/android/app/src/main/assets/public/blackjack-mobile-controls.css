@@ -1,0 +1,27 @@
+/* Android package only: 1.1 layout. */
+@media (max-width: 760px) {
+  .game[data-phase="player"] .actions {
+    display: grid;
+    grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+    gap: 10px;
+    width: 100%;
+  }
+
+  .game[data-phase="player"] .actions #stand {
+    grid-row: 1;
+    grid-column: 1;
+    min-width: 0;
+  }
+
+  .game[data-phase="player"] .actions #hit {
+    grid-row: 1;
+    grid-column: 2;
+    min-width: 0;
+  }
+
+  .game[data-phase="player"] .actions .button {
+    min-height: 58px;
+    height: 58px;
+    font-size: 18px;
+  }
+}
