@@ -4,3 +4,7 @@ dist/
 apps/android/android/.gradle/
 apps/android/android/app/build/
 apps/android/android/local.properties
+
+apps/windows/shell/site.zip
+
+apps/windows/发布/

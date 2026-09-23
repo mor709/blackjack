@@ -17,6 +17,7 @@ internal static class Program
     private const string CacheFolder = "春山21点-运行数据";
     private static bool receivedHeartbeat;
     private static DateTime lastHeartbeat;
+    private static volatile bool shutdownRequested;
 
     [STAThread]
     private static void Main()
@@ -79,6 +80,7 @@ internal static class Program
             var startupDeadline = DateTime.UtcNow.AddMinutes(2);
             while (listener.IsListening)
             {
+                if (shutdownRequested) break;
                 if (!receivedHeartbeat && DateTime.UtcNow >= startupDeadline) break;
                 if (receivedHeartbeat && DateTime.UtcNow - lastHeartbeat > TimeSpan.FromSeconds(45)) break;
                 Thread.Sleep(500);
@@ -239,6 +241,13 @@ internal static class Program
             context.Response.Close();
             return;
         }
+        if (String.Equals(requested, "__shutdown", StringComparison.OrdinalIgnoreCase))
+        {
+            shutdownRequested = true;
+            context.Response.StatusCode = 204;
+            context.Response.Close();
+            return;
+        }
         var file = Path.GetFullPath(Path.Combine(root, String.IsNullOrEmpty(requested) ? "index.html" : requested));
         var safeRoot = Path.GetFullPath(root) + Path.DirectorySeparatorChar;
         if (!file.StartsWith(safeRoot, StringComparison.OrdinalIgnoreCase) || !File.Exists(file))
@@ -264,3 +273,4 @@ internal static class Program
     }
 
 }
+
